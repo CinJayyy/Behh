@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Short+Stack&display=swap');
+
+/* Bobby Jones Soft is a paid font: put BobbyJonesSoft.otf next to this file
+   (or install it). Short Stack is the fallback until then. */
+@font-face {
+  font-family: 'Bobby Jones';
+  src: local('Bobby Jones Soft'), local('BobbyJonesSoft'), local('Bobby Jones'),
+       url('BobbyJonesSoft.otf') format('opentype');
+}
+
+:root {
+  --ink: #5a2340; --pink: #ff5c8a; --cream: #fff8f0;
+  --mint: #d9f5e8; --lemon: #fff3c4;
+  --font: 'Bobby Jones', 'Bobby Jones Soft', 'Short Stack', 'Comic Sans MS', cursive;
+}
+
+* { box-sizing: border-box; }
+
+/* 🛑 1. LOCK THE ENTIRE SCREEN */
+html, body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: 1000px, cover;
+  /* bg.jpg first; the pink gradient shows if the image is missing */
+  background-image: url("bg.jpg"), radial-gradient(circle at 30% 20%, #ffe3ec, #ffd0e0);
+  background-position: center center;
+
+  /* These lines completely disable mobile scrolling, pulling, and zooming */
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+
+  font-family: var(--font);
+  color: var(--ink);
+}
+
+/* 🎉 Confetti + cakes canvas (drawn by script.js) */
+#bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.paper {
+  background-color: var(--cream);
+  background-image: url("paper.webp");
+  background-size: 500px;
+  background-position: center center;
+  background-blend-mode: multiply; /* lets the pastel colors tint the paper texture */
+  width: min(92vw, 460px);
+  padding: 20px clamp(36px, 12vw, 100px);
+  border-radius: 26px;              /* ✅ rounded corners */
+  text-align: center;
+  transform: rotateZ(-5deg);
+  box-shadow: 1px 15px 20px 0px rgba(0,0,0,0.5);
+  position: absolute;
+  z-index: 1;
+  cursor: grab;
+
+  /* Forces the browser to treat touches as interactions, not scrolls */
+  touch-action: none;
+  user-select: none;
+}
+.paper.holding { cursor: grabbing; box-shadow: 1px 26px 30px 0px rgba(0,0,0,0.45); }
+
+.paper p { margin: 6px 0; font-size: clamp(22px, 6vw, 28px); line-height: 1.25; }
+.paper.red   { background-color: var(--pink); color: #fff; }
+.paper.mint  { background-color: var(--mint); }
+.paper.lemon { background-color: var(--lemon); }
+.paper.red .p2 { font-size: clamp(30px, 9vw, 40px); }
+.hint { font-size: 18px !important; opacity: .7; }
+
+.heart-icon { font-size: 76px; line-height: 1; margin-bottom: 4px; animation: beat 1.2s infinite; }
+@keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
+@media (prefers-reduced-motion: reduce) { .heart-icon { animation: none; } }
+
+/* 🛑 2. PREVENT IMAGE HIJACKING */
+img {
+  max-height: 200px;
+  width: 100%;
+  object-fit: cover;
+  margin-top: 12px;
+  border-radius: 18px;              /* ✅ rounded photos */
+  display: block;
+
+  /* These lines stop the phone from trying to "save" or "drag" the image itself */
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
